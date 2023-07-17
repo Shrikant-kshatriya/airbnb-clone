@@ -15,7 +15,7 @@ export default function IndexPage(){
         <Link to={'/place/'+place._id} key={index}>
           <div className="bg-gray-500 mb-2 rounded-2xl flex">
             {place.photos?.[0] && (
-              <img className="rounded-2xl object-cover aspect-square" src={"http://127.0.0.1:3000/uploads/"+place.photos?.[0]} />
+              <img className="rounded-2xl object-cover aspect-square" src={import.meta.env.VITE_API_URL+"/uploads/"+place.photos?.[0]} />
             )}
           </div>
           <h2 className="font-bold">{place.address}</h2>

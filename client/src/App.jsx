@@ -13,7 +13,10 @@ import PlacePage from './pages/PlacePage'
 import BookingsPage from './pages/BookingsPage'
 import BookingPage from './pages/BookingPage'
 
-axios.defaults.baseURL = 'http://127.0.0.1:3000';
+const apiUrl = import.meta.env.VITE_API_URL;
+console.log(apiUrl)
+
+axios.defaults.baseURL = apiUrl;
 axios.defaults.withCredentials = true;
 
 function App() {

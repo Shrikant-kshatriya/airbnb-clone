@@ -67,7 +67,7 @@ export default function PhotoUploader({ addedPhotos, setAddedPhotos }) {
             <div className="h-32 flex relative" key={index}>
               <img
                 className="w-full rounded-2xl object-cover"
-                src={"http://127.0.0.1:3000/uploads/" + link}
+                src={import.meta.env.VITE_API_URL+"/uploads/" + link}
                 alt=""
               />
               <button

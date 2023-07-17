@@ -35,7 +35,7 @@ export default function PlaceGallery({place}){
                 <div className="lg:w-1/2 md:w-2/3 sm:w-full" key={index}>
                   <img
                     className="aspect-fit object-cover"
-                    src={"http://127.0.0.1:3000/uploads/" + photo}
+                    src={import.meta.env.VITE_API_URL +"/uploads/" + photo}
                     alt=""
                   />
                 </div>
@@ -55,7 +55,7 @@ export default function PlaceGallery({place}){
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="cursor-pointer aspect-square object-cover hover:opacity-75"
-                  src={"http://127.0.0.1:3000/uploads/" + place.photos[0]}
+                  src={import.meta.env.VITE_API_URL + "/uploads/" + place.photos[0]}
                   alt=""
                 />
               )}
@@ -66,7 +66,7 @@ export default function PlaceGallery({place}){
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover hover:opacity-75"
-                src={"http://127.0.0.1:3000/uploads/" + place.photos[1]}
+                src={import.meta.env.VITE_API_URL+ "/uploads/" + place.photos[1]}
                 alt=""
               />
             )}
@@ -75,7 +75,7 @@ export default function PlaceGallery({place}){
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="cursor-pointer aspect-square object-cover relative top-2 hover:opacity-75"
-                  src={"http://127.0.0.1:3000/uploads/" + place.photos[2]}
+                  src={ import.meta.env.VITE_API_URL +"/uploads/" + place.photos[2]}
                   alt=""
                 />
               )}
