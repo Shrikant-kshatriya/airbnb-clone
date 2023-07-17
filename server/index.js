@@ -52,7 +52,8 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const {email, password} = req.body;
-    const userDoc = await User.findOne({email:email});
+    try {
+        const userDoc = await User.findOne({email:email});
     if(userDoc){
         const passOK = bcrypt.compareSync(password, userDoc.password);
         if(passOK){
@@ -70,16 +71,24 @@ app.post('/login', async (req, res) => {
     }else {
         res.json('not found')
     }
+    } catch (error) {
+        console.log(error)
+    }
+    
 });
 
 app.get('/profile', (req, res) => {
     const {token} = req.cookies;
     if(token){
         jwt.verify(token, jwtSecret, {},async (err, userData) => {
-            if(err) throw err;
+            try {
+                if(err) throw err;
             const user = await User.findById
             (userData.id, 'name email _id');
             res.json(user);
+            } catch (error) {
+                console.log(error)
+            }
         })
     }else {
         res.json(null);
@@ -93,11 +102,16 @@ app.post('/logout', (req, res) => {
 app.post('/upload-by-link', async (req, res) => {
     const {link} = req.body;
     const newName = 'Photo' + Date.now() + '.jpg';
-    await imageDownloader.image({
-        url: link,
-        dest: __dirname + '/uploads/' +newName,
-    });
-    res.json(newName);
+    try {
+        await imageDownloader.image({
+            url: link,
+            dest: __dirname + '/uploads/' +newName,
+        });
+        res.json(newName);
+    } catch (error) {
+        console.log(error)
+    }
+    
 });
 
 const photosMiddleware = multer({dest:'uploads'});
@@ -121,7 +135,8 @@ app.post('/places', (req, res) => {
         perks, extraInfo, checkIn,
         checkOut, maxGuest, price } = req.body;
     jwt.verify(token, jwtSecret, {},async (err, userData) => {
-        if(err) throw err;
+        try {
+            if(err) throw err;
         const placeDoc = await Place.create({
             owner: userData.id,
             title, 
@@ -136,6 +151,10 @@ app.post('/places', (req, res) => {
             price,
         });
         res.json(placeDoc);
+        } catch (error) {
+            console.log(error)
+        }
+        
 
     })
 });
@@ -147,7 +166,8 @@ app.put('/places', async (req, res) => {
         perks, extraInfo, checkIn,
         checkOut, maxGuest, price } = req.body;
     jwt.verify(token, jwtSecret, {},async (err, userData) => {
-        if(err) throw err;
+        try {
+            if(err) throw err;
         const placeDoc = await Place.findById(id);
         if(userData.id === placeDoc.owner.toString()){
             placeDoc.set({
@@ -165,33 +185,53 @@ app.put('/places', async (req, res) => {
             await placeDoc.save();
             res.json('ok');
         }
+        } catch (error) {
+            console.log(error);
+        }
+        
     });
 });
 
 app.get('/user-places', (req, res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {},async (err, userData) => {
-        if(err) throw err;
-        const {id} = userData;
-        res.json(await Place.find({owner: id}));
+        try {
+            if(err) throw err;
+            const {id} = userData;
+            res.json(await Place.find({owner: id}));
+            
+        } catch (error) {
+            console.log(error)
+        }
     });
 });
 
 
 app.get('/places/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Place.findById(id));
+    try {
+        res.json(await Place.findById(id));
+        
+    } catch (error) {
+        console.log(error)
+    }
 });
 
 // getting all places
 app.get('/places', async (req, res) => {
-    res.json(await Place.find());
+    try {
+        res.json(await Place.find());
+        
+    } catch (error) {
+        console.log(error)
+    }
 });
 
 app.post('/bookings', async (req, res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {},async (err, userData) => {
-        if(err) throw err;
+        try {
+            if(err) throw err;
         const {id} = userData;
         const {place,checkIn,checkOut,
             numberOfGuest,name,phone,price} = req.body;
@@ -206,6 +246,9 @@ app.post('/bookings', async (req, res) => {
             price
         });
         res.json(bookingDoc);
+        } catch (error) {
+            console.log(error)
+        }
         
     });
 });
@@ -213,9 +256,14 @@ app.post('/bookings', async (req, res) => {
 app.get('/bookings', (req, res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {},async (err, userData) => {
-        if(err) throw err;
-        const {id} = userData;
-        res.json(await Booking.find({user: id}).populate('place'));
+        try {
+            if(err) throw err;
+            const {id} = userData;
+            res.json(await Booking.find({user: id}).populate('place'));
+            
+        } catch (error) {
+            console.log(error)
+        }
     });
 });
 

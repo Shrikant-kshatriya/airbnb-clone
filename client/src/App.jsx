@@ -14,7 +14,6 @@ import BookingsPage from './pages/BookingsPage'
 import BookingPage from './pages/BookingPage'
 
 const apiUrl = import.meta.env.VITE_API_URL;
-console.log(apiUrl)
 
 axios.defaults.baseURL = apiUrl;
 axios.defaults.withCredentials = true;
