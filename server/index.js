@@ -62,7 +62,7 @@ app.post('/login', async (req, res) => {
                 id: userDoc._id,
             },jwtSecret,{}, (err, token) => {
                 if(err) throw err;
-                res.cookie('token', token, {httpOnly: true, secure:true, domain:'.onrender.com',sameSite:'None'}).json(userDoc);
+                res.cookie('token', token, {httpOnly: true, secure:true, domain:'https://airbnb-api-jpw6.onrender.com',sameSite:'None'}).json(userDoc);
             });
         }
         else{
